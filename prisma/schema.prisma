@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PG_URI")
+  relationMode = "prisma"
+}
+
+// User table
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  username    String    @unique
+  role        Role     
+  password    String
+  bio         String?
+  profilepic  String?
+  projects    Project[]
+}
+
+model Project {
+  id            Int       @id @default(autoincrement())
+  name          String
+  postedBy      User      @relation(fields: [postedById], references: [id])
+  postedById    Int
+  invested      Float?
+  cashFlow      Float?
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    Category
+  User        String
+  handledBy   User     @relation(fields: [User], references: [username])
+  quantity    Int
+  boughtFrom  String?
+  boughtFor   Float?
+  project      Project  @relation(fields: [projectId], references: [id])
+  projectId   Int
+}
+
+model Employee {
+  id            Int       @id @default(autoincrement())
+  name          String
+  age           Int
+  workingInId   Int?
+  current       Project  @relation(fields: [name], references: [name], onDelete: Cascade,onUpdate: Cascade)
+  rating        Float?
+}
+
+enum Category {
+
+  Building
+  Electrical
+  Plumbing
+  HVAC
+  Tools
+  Finishing
+  Hardware
+  Safety
+  Landscaping
+  Environmental
+  interior
+  exterior
+}
+
+
+enum Role {
+    Admin
+    Manager
+    supervisor
+    Client
+  }
+
+enum employee_role {
+    
+    Manager
+    Architect
+    Surveyor
+    Civil_Engineer
+    Contractor
+    Estimator
+    Structural_Engineer
+    Field_Engineer
+    Inspector
+    Electrician
+    Heavy_equipment_operator
+    Plumber
+    Superintendent
+    Supervisor
+    Accountant
+    Carpenter
+    Collaboration
+    Operator
+    Planner
+  
+  }
